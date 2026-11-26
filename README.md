@@ -1,22 +1,47 @@
 # TechStack-Study
 
-Java와 Spring을 중심으로 배운 개념, 프로젝트 실습, 배포 중 겪은 문제와 해결 과정을 날짜별로 기록합니다.
+Java와 Spring을 중심으로 웹 요청, 데이터베이스, 인증을 공부하고 프로젝트에서 만난 문제를 어떻게 해결하고 검증했는지 기록합니다.
 
-전체 학습 기록은 [DailyLog](docs/DailyLog/)에서 날짜별로 볼 수 있습니다.
+**2026.08.03 ~ 2026.11.25 · DailyLog 36개**
 
-## 학습 주제와 대표 기록
+[전체 학습 기록 보기](docs/DailyLog/)
 
-| 주제 | 공부한 내용 | 대표 기록 |
-| --- | --- | --- |
-| Java 기초 | 클래스와 객체, 인터페이스, 예외 처리, 컬렉션 | [클래스와 객체](docs/DailyLog/2026-08-03.md) · [컬렉션](docs/DailyLog/2026-08-07.md) |
-| Java 웹 개발 | JSP·Servlet의 요청과 응답, MVC, DAO·JDBC를 통한 DB 연동 | [회원 등록과 조회 흐름](docs/DailyLog/2026-08-20.md) · [MVC 실습](docs/DailyLog/2026-08-27.md) |
-| 브라우저 통신과 디버깅 | JSON·AJAX·WebSocket, Chrome 개발자 도구에서 실행 흐름과 변수 확인 | [JSON·AJAX·WebSocket](docs/DailyLog/2026-09-08.md) · [브레이크포인트 실습](docs/DailyLog/2026-11-19.md) |
-| Spring Boot와 데이터베이스 | REST API 설계, JPA와 영속성 컨텍스트 | [REST API와 JPA](docs/DailyLog/2026-10-27.md) |
-| 인증과 인가 | Spring Security, JWT, Google OAuth2 로그인 | [JWT 인증 흐름](docs/DailyLog/2026-11-02.md) · [Google 로그인 흐름](docs/DailyLog/2026-11-03.md) |
-| 배포와 운영 | AWS EC2와 MySQL, GitHub Actions 배포, Nginx와 HTTPS 적용 | [EC2 배포 구성](docs/DailyLog/2026-11-11.md) · [StoreCRM 배포 트러블슈팅](docs/DailyLog/2026-11-25.md) |
+## 대표 기록
 
-## DailyLog 기록 방식
+### StoreCRM 배포 후 `502 Bad Gateway` 해결
 
-- **개념 복습**은 배운 내용을 내 말로 정리하고, 코드 예시나 요청 흐름을 따라가며 이해한 내용을 확인합니다.
-- **프로젝트 실습**은 그날의 목표, 진행한 작업, 직접 확인한 결과와 다음에 복습할 내용을 남깁니다.
-- **트러블슈팅**은 증상, 로그나 설정에서 확인한 단서, 원인과 해결 과정을 기록합니다. [StoreCRM 배포 기록](docs/DailyLog/2026-11-25.md)에는 HTTPS 적용 중 발생한 Google 로그인 오류와 서비스 재시작 후 발생한 `502 Bad Gateway`를 해결한 과정이 담겨 있습니다.
+EC2 서비스 로그에서 Hibernate 스키마 검증 오류를 찾았습니다. 팀원의 수정이 포함된 버전을 재배포한 뒤 `/login`의 HTTP 200 응답과 Google 로그인 완료를 확인했습니다. [11월 25일 운영 기록 읽기](docs/DailyLog/2026-11-25.md)
+
+[![StoreCRM 배포 기록 발췌. 재시작 후 502가 발생했고 로그에서 누락된 image 테이블을 확인했습니다. 수정된 버전을 재배포한 뒤 로그인 화면과 Google 로그인을 검증했습니다.](images/readme/storecrm-incident.png)](docs/DailyLog/2026-11-25.md)
+
+### JPA N+1 개선과 SQL 1회 검증
+
+Defect Lab 실습에서 맛집마다 반복되던 리뷰 수 조회를 DTO 프로젝션과 `LEFT JOIN` 집계로 합쳤습니다. 테스트에서 목록 조회가 SQL 1회로 끝나는지 확인했습니다. [11월 16일 실습 기록 읽기](docs/DailyLog/2026-11-16.md)
+
+[![Defect Lab 실습 기록 발췌. 반복문에서 리뷰 목록을 지연 로딩하던 쿼리를 LEFT JOIN과 GROUP BY로 집계해 SQL 1회 조회 테스트를 통과했습니다.](images/readme/jpa-n-plus-one.png)](docs/DailyLog/2026-11-16.md)
+
+### Spring Security에서 JWT 요청이 처리되는 흐름
+
+HTTP 요청에서 토큰을 읽고 검증한 뒤 `SecurityContext`에 인증 정보를 설정하는 흐름을 정리했습니다. 로그인한 사용자를 확인하는 인증과 접근 권한을 확인하는 인가가 코드에서 언제 일어나는지 복습했습니다. [11월 2일 학습 기록 읽기](docs/DailyLog/2026-11-02.md)
+
+[![JWT 학습 기록 발췌. JWT 인증 필터가 Authorization 헤더에서 토큰을 추출해 검증하고 SecurityContext에 인증 정보를 등록합니다. 인가 검사를 거친 요청은 Controller로 전달됩니다.](images/readme/spring-security-jwt.png)](docs/DailyLog/2026-11-02.md)
+
+## 8월부터 쌓아 온 DailyLog
+
+8월 Java 기초와 JSP·Servlet부터 시작해 JDBC와 웹 요청 흐름을 실습했습니다. 이후 Spring Boot·JPA와 인증을 공부하고, 11월에는 AWS 배포와 서버 로그를 바탕으로 해결한 문제를 기록했습니다. [날짜별 파일 목록 열기](docs/DailyLog/)
+
+[![2026년 8월부터 11월까지의 DailyLog 전체 파일 목록. 8월 14개, 9월 8개, 10월 2개, 11월 12개로 총 36개입니다.](images/readme/dailylog-overview.png)](docs/DailyLog/)
+
+<details>
+<summary>주제별 학습 기록 더 보기</summary>
+
+| 주제 | 연결된 기록 |
+| --- | --- |
+| Java 기초 | [클래스와 객체](docs/DailyLog/2026-08-03.md) · [컬렉션](docs/DailyLog/2026-08-07.md) |
+| JSP·Servlet · MVC · JDBC | [회원 등록과 조회 흐름](docs/DailyLog/2026-08-20.md) · [MVC 실습](docs/DailyLog/2026-08-27.md) |
+| 브라우저 통신과 디버깅 | [JSON·AJAX·WebSocket](docs/DailyLog/2026-09-08.md) · [브레이크포인트 실습](docs/DailyLog/2026-11-19.md) |
+| Spring Boot와 데이터베이스 | [REST API와 JPA](docs/DailyLog/2026-10-27.md) |
+| 인증과 인가 | [JWT 인증 흐름](docs/DailyLog/2026-11-02.md) · [Google 로그인 흐름](docs/DailyLog/2026-11-03.md) |
+| 배포와 운영 | [EC2 배포 구성](docs/DailyLog/2026-11-11.md) · [StoreCRM 배포 트러블슈팅](docs/DailyLog/2026-11-25.md) |
+
+</details>
