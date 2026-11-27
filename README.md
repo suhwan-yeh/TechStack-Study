@@ -2,7 +2,7 @@
 
 ## DailyLog 전체 목록
 
-**2026.08.03 ~ 2026.11.25 · DailyLog 개발일지 (2026.11.25일 기준) **
+**2026.08.03 ~ 2026.11.25 · DailyLog 개발 연습 일지 (2026.11.25일 기준) **
 
 Java 기초와 JSP·Servlet부터 Spring Boot·JPA, 인증, AWS 배포까지 날짜별로 기록했습니다. [GitHub에서 전체 파일 목록 열기](docs/DailyLog/)
 
